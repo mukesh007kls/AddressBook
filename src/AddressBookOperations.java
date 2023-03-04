@@ -126,6 +126,19 @@ public class AddressBookOperations {
         System.out.println("PinCode:-" + address.getPinCode());
     }
 
+    public void deleteContact(){
+        sc.nextLine();
+        System.out.println("Enter the First name of the person whose details you want delete:-");
+        String firstName=sc.nextLine();
+        System.out.println("Enter the Last name of the person whose details you want delete:-");
+        String lastName=sc.nextLine();
+        for (Address x:addressList) {
+            if (x.getFirstName().equalsIgnoreCase(firstName)&&x.getLastName().equalsIgnoreCase(lastName)){
+                addressList.remove(x);
+            }
+        }
+    }
+
     public void printDetails() {
         for (Address x : addressList) {
             System.out.println("Details for Person");
