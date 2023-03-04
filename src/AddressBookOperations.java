@@ -1,10 +1,9 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class AddressBookOperations {
-    final List<Address> addressList = new ArrayList<>();
+    final HashMap<String, AddressBookOperations> ADDRESS_DICTIONARY = new HashMap<>();
     Scanner sc = new Scanner(System.in);
+    List<Address> addressList = new ArrayList<>();
 
     public void readDetails() {
         boolean addContact = true;
@@ -126,17 +125,13 @@ public class AddressBookOperations {
         System.out.println("PinCode:-" + address.getPinCode());
     }
 
-    public void deleteContact(){
+    public void deleteContact() {
         sc.nextLine();
         System.out.println("Enter the First name of the person whose details you want delete:-");
-        String firstName=sc.nextLine();
+        String firstName = sc.nextLine();
         System.out.println("Enter the Last name of the person whose details you want delete:-");
-        String lastName=sc.nextLine();
-        for (Address x:addressList) {
-            if (x.getFirstName().equalsIgnoreCase(firstName)&&x.getLastName().equalsIgnoreCase(lastName)){
-                addressList.remove(x);
-            }
-        }
+        String lastName = sc.nextLine();
+        addressList.removeIf(x -> x.getFirstName().equalsIgnoreCase(firstName) && x.getLastName().equalsIgnoreCase(lastName));
     }
 
     public void printDetails() {
@@ -152,4 +147,50 @@ public class AddressBookOperations {
             System.out.println();
         }
     }
+
+    public void addressBook(String bookName, AddressBookOperations addressBookOperations) {
+        final int ADD_CONTACT = 1;
+        final int EDIT_CONTACT = 2;
+        final int PRINT_CONTACT = 3;
+        final int DELETE_CONTACT = 4;
+        final int EXIT = 5;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Welcome to " + bookName + " Address Book");
+        boolean loop = true;
+        while (loop) {
+            System.out.println("Enter the choice:-\n1.Add a new contact\n2.Edit Contact Details\n3.Display the Contacts\n4.Delete a contact\n5.To exit");
+            int choice = sc.nextInt();
+            switch (choice) {
+                case ADD_CONTACT -> addressBookOperations.readDetails();
+                case EDIT_CONTACT -> addressBookOperations.editDetails();
+                case PRINT_CONTACT -> addressBookOperations.printDetails();
+                case DELETE_CONTACT -> addressBookOperations.deleteContact();
+                case EXIT -> loop = false;
+                default -> throw new IllegalStateException("Unexpected value: " + choice);
+            }
+        }
+    }
+
+    public void createAddressBooks() {
+
+        System.out.println("Enter address book name:-");
+        String addressBookName = sc.nextLine();
+        if (ADDRESS_DICTIONARY.containsKey(addressBookName)) {
+            System.out.println("Address book already exits");
+            return;
+        }
+        AddressBookOperations addressBookOperations = new AddressBookOperations();
+        addressBookOperations.addressBook(addressBookName, addressBookOperations);
+        ADDRESS_DICTIONARY.put(addressBookName, addressBookOperations);
+    }
+
+    public void printBooks() {
+        for (Map.Entry<String, AddressBookOperations> addressBook : ADDRESS_DICTIONARY.entrySet()) {
+            System.out.println(addressBook.getKey());
+            addressBook.getValue().printDetails();
+//            System.out.println(addressBook.getValue());
+        }
+    }
+
+
 }
