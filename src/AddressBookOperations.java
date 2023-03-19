@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class AddressBookOperations {
-    final HashMap<String, AddressBookOperations> ADDRESS_DICTIONARY = new HashMap<>();
+    HashMap<String, AddressBookOperations> address_Dictionary = new HashMap<>();
     Scanner sc = new Scanner(System.in);
     List<Address> addressList = new ArrayList<>();
 
@@ -37,10 +37,20 @@ public class AddressBookOperations {
             System.out.println("Enter PinCode:");
             address1.setPinCode(sc1.nextInt());
 
-            Address address2 = new Address(address1.getFirstName(), address1.getLastName(), address1.getPhoneNumber(),
-                    address1.geteMail(), address1.getAddress(), address1.getCity(), address1.getCity(),
-                    address1.getPinCode());
-            addressList.add(address2);
+            boolean present = true;
+
+            for (Address tempAddress : addressList) {
+                if (tempAddress.getFirstName().equalsIgnoreCase(address1.getFirstName()) && tempAddress.getLastName().equalsIgnoreCase(address1.getLastName())) {
+                    System.out.println("Contact person already exist!");
+                    present = false;
+                }
+            }
+            if (present) {
+                Address address2 = new Address(address1.getFirstName(), address1.getLastName(), address1.getPhoneNumber(),
+                        address1.geteMail(), address1.getAddress(), address1.getCity(), address1.getCity(),
+                        address1.getPinCode());
+                addressList.add(address2);
+            }
             System.out.println("If you want add another contact enter add or else enter exit:-");
             String choice = sc.next();
             addContact = choice.equalsIgnoreCase("add");
@@ -175,22 +185,47 @@ public class AddressBookOperations {
 
         System.out.println("Enter address book name:-");
         String addressBookName = sc.nextLine();
-        if (ADDRESS_DICTIONARY.containsKey(addressBookName)) {
+
+        if (address_Dictionary.containsKey(addressBookName)) {
             System.out.println("Address book already exits");
             return;
         }
+
         AddressBookOperations addressBookOperations = new AddressBookOperations();
         addressBookOperations.addressBook(addressBookName, addressBookOperations);
-        ADDRESS_DICTIONARY.put(addressBookName, addressBookOperations);
+        address_Dictionary.put(addressBookName, addressBookOperations);
     }
 
-    public void printBooks() {
-        for (Map.Entry<String, AddressBookOperations> addressBook : ADDRESS_DICTIONARY.entrySet()) {
-            System.out.println(addressBook.getKey());
-            addressBook.getValue().printDetails();
-//            System.out.println(addressBook.getValue());
+    public void editBooks() {
+        System.out.println("Enter the address book name you want to edit:-");
+        String addressBookName = sc.nextLine();
+        if (address_Dictionary.containsKey(addressBookName)) {
+            System.out.println("Address book already exits");
+            AddressBookOperations addressBookOperations = address_Dictionary.get(addressBookName);
+            addressBookOperations.addressBook(addressBookName, addressBookOperations);
+        } else {
+            System.out.println(addressBookName + "Address book doesn't\nAdd Address book first");
+            AddressBookOperations addressBookOperations = new AddressBookOperations();
+            addressBookOperations.createAddressBooks();
         }
     }
 
+    public void deleteBook() {
+        System.out.println("Enter the address book name you want to delete:-");
+        String addressBookName = sc.nextLine();
+        if (address_Dictionary.containsKey(addressBookName)) {
+            address_Dictionary.remove(addressBookName);
+            System.out.println("Address book deleted successfully");
+        } else {
+            System.out.println("Address book doesn't exist");
+        }
+    }
+
+    public void printBooks() {
+        for (Map.Entry<String, AddressBookOperations> addressBook : address_Dictionary.entrySet()) {
+            System.out.println(addressBook.getKey());
+            addressBook.getValue().printDetails();
+        }
+    }
 
 }

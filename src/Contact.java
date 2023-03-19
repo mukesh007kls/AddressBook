@@ -1,9 +1,9 @@
 public class Contact {
-    String  firstName;
-    String  lastName;
+    private String  firstName;
+    private String  lastName;
 
-    long phoneNumber;
-    String eMail;
+    private long phoneNumber;
+    private String eMail;
     public  Contact(){
 
     }
