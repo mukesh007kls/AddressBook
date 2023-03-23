@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AddressBookOperations {
     HashMap<String, AddressBookOperations> address_Dictionary = new HashMap<>();
@@ -47,7 +48,7 @@ public class AddressBookOperations {
             }
             if (present) {
                 Address address2 = new Address(address1.getFirstName(), address1.getLastName(), address1.getPhoneNumber(),
-                        address1.geteMail(), address1.getAddress(), address1.getCity(), address1.getCity(),
+                        address1.geteMail(), address1.getAddress(), address1.getCity(), address1.getState(),
                         address1.getPinCode());
                 addressList.add(address2);
             }
@@ -228,4 +229,40 @@ public class AddressBookOperations {
         }
     }
 
+    public List<Address> searchByCity(String city) {
+        return addressList.stream().filter(person -> person.getCity().equalsIgnoreCase(city)).collect(Collectors.toList());
+    }
+
+    public List<Address> searchByState(String state){
+        return addressList.stream().filter(person->person.getState().equalsIgnoreCase(state)).collect(Collectors.toList());
+    }
+    public void searchBYOptions(){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Enter choice of search:-\n1.City\n2.State");
+        int option= scanner.nextInt();
+        scanner.nextLine();
+        switch (option){
+            case 1-> {
+                System.out.println("Enter city name:-");
+                String city = scanner.nextLine();
+                for(Map.Entry<String, AddressBookOperations> entry:address_Dictionary.entrySet()){
+                    entry.getValue().searchByCity(city).forEach(System.out::println);
+                    System.out.println();
+                }
+            }
+            case 2->{
+                System.out.println("Enter State name:-");
+                String state=scanner.nextLine();
+                for(Map.Entry<String, AddressBookOperations> entry:address_Dictionary.entrySet()){
+                    entry.getValue().searchByState(state).forEach(System.out::println);
+                    System.out.println();
+                }
+            }
+            default -> {
+                System.out.println("Enter correct choice:-");
+                searchBYOptions();
+            }
+        }
+    }
 }
+

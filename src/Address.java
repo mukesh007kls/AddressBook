@@ -85,4 +85,10 @@ public class Address extends Contact {
                 address1.getPinCode());
         return address2;
     }
+    @Override
+    public String toString(){
+        return("Name:"+getFirstName()+" "+getLastName()+
+                "\nPhoneNumber:"+getPhoneNumber()+"\nEmailID:"+geteMail()+
+                "\nAddress:"+address+"\nCity:"+city+"\nState:"+state+"\nPinCode:"+pinCode);
+    }
 }

@@ -5,7 +5,8 @@ public class AddressBookMain {
     public static final int DELETE_ADDRESS_BOOK = 2;
     private static final int EDIT_ADDRESS_BOOK = 3;
     private static final int PRINT_ADDRESS_BOOK = 4;
-    public static final int EXIT = 5;
+    private static final int SEARCH_BY_CITY_STATE=5;
+    public static final int EXIT = 0;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -13,13 +14,14 @@ public class AddressBookMain {
         AddressBookOperations addressBookOperations = new AddressBookOperations();
         boolean loop = true;
         while (loop) {
-            System.out.println("Enter the choice:-\n1.Add a new Address Book\n2.Edit Address Book\n3.Delete Address Book\n4.Print Address Books\n5.To exit");
+            System.out.println("Enter the choice:-\n1.Add a new Address Book\n2.Edit Address Book\n3.Delete Address Book\n4.Print Address Books\n5.Search by city or state\n0.To exit");
             int choice = sc.nextInt();
             switch (choice) {
                 case ADD_ADDRESS_BOOK -> addressBookOperations.createAddressBooks();
                 case EDIT_ADDRESS_BOOK -> addressBookOperations.editBooks();
                 case DELETE_ADDRESS_BOOK -> addressBookOperations.deleteBook();
                 case PRINT_ADDRESS_BOOK -> addressBookOperations.printBooks();
+                case SEARCH_BY_CITY_STATE -> addressBookOperations.searchBYOptions();
                 case EXIT -> loop = false;
                 default -> throw new IllegalStateException("Unexpected value: " + choice);
             }
