@@ -234,4 +234,5 @@ public class AddressBookOperations {
     public List<Address> searchByCity(String city,HashMap<String, AddressBookOperations> address_Dictionary){
         return address_Dictionary.values().stream().flatMap(p -> p.addressList.stream()).filter(p->p.getState().equalsIgnoreCase(city)).collect(Collectors.toList());
     }
+
 }

@@ -13,6 +13,8 @@ public class AddressBookMain {
 
     public static void main(String[] args) {
         HashMap<String, AddressBookOperations> address_Dictionary = new HashMap<>();
+        int countOfPersonsCity=0;
+        int countOfPersonsState=0;
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to Address Book");
         AddressBookOperations addressBookOperations = new AddressBookOperations();
@@ -36,15 +38,17 @@ public class AddressBookMain {
                         case 1-> {
                             System.out.println("Enter city name:-");
                             String city = scanner.nextLine();
-                            addressBookOperations.searchByCity(city,address_Dictionary);
+                            countOfPersonsCity=addressBookOperations.searchByCity(city,address_Dictionary).size();
                             cityHashMap.put(city,addressBookOperations.searchByCity(city,address_Dictionary));
+                            System.out.println("Number of persons living in "+city+" is:-"+countOfPersonsCity);
                             System.out.println(cityHashMap);
                         }
                         case 2->{
                             System.out.println("Enter State name:-");
                             String state=scanner.nextLine();
-                            addressBookOperations.searchByState(state,address_Dictionary);
+                            countOfPersonsState=addressBookOperations.searchByState(state,address_Dictionary).size();
                             stateHashMap.put(state,addressBookOperations.searchByState(state,address_Dictionary));
+                            System.out.println("Number of persons living in "+state+" is:-"+countOfPersonsState);
                             System.out.println(stateHashMap);
                         }
                     }
