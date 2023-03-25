@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AddressBookMain {
@@ -9,6 +12,7 @@ public class AddressBookMain {
     public static final int EXIT = 0;
 
     public static void main(String[] args) {
+        HashMap<String, AddressBookOperations> address_Dictionary = new HashMap<>();
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to Address Book");
         AddressBookOperations addressBookOperations = new AddressBookOperations();
@@ -17,11 +21,34 @@ public class AddressBookMain {
             System.out.println("Enter the choice:-\n1.Add a new Address Book\n2.Edit Address Book\n3.Delete Address Book\n4.Print Address Books\n5.Search by city or state\n0.To exit");
             int choice = sc.nextInt();
             switch (choice) {
-                case ADD_ADDRESS_BOOK -> addressBookOperations.createAddressBooks();
-                case EDIT_ADDRESS_BOOK -> addressBookOperations.editBooks();
-                case DELETE_ADDRESS_BOOK -> addressBookOperations.deleteBook();
-                case PRINT_ADDRESS_BOOK -> addressBookOperations.printBooks();
-                case SEARCH_BY_CITY_STATE -> addressBookOperations.searchBYOptions();
+                case ADD_ADDRESS_BOOK -> addressBookOperations.createAddressBooks(address_Dictionary);
+                case EDIT_ADDRESS_BOOK -> addressBookOperations.editBooks(address_Dictionary);
+                case DELETE_ADDRESS_BOOK -> addressBookOperations.deleteBook(address_Dictionary);
+                case PRINT_ADDRESS_BOOK -> addressBookOperations.printBooks(address_Dictionary);
+                case SEARCH_BY_CITY_STATE -> {
+                    Scanner scanner=new Scanner(System.in);
+                    Map<String, List<Address>> cityHashMap=new HashMap<>();
+                    Map<String, List<Address>> stateHashMap=new HashMap<>();
+                    System.out.println("Enter choice of search:-\n1.City\n2.State");
+                    int option= scanner.nextInt();
+                    scanner.nextLine();
+                    switch (option){
+                        case 1-> {
+                            System.out.println("Enter city name:-");
+                            String city = scanner.nextLine();
+                            addressBookOperations.searchByCity(city,address_Dictionary);
+                            cityHashMap.put(city,addressBookOperations.searchByCity(city,address_Dictionary));
+                            System.out.println(cityHashMap);
+                        }
+                        case 2->{
+                            System.out.println("Enter State name:-");
+                            String state=scanner.nextLine();
+                            addressBookOperations.searchByState(state,address_Dictionary);
+                            stateHashMap.put(state,addressBookOperations.searchByState(state,address_Dictionary));
+                            System.out.println(stateHashMap);
+                        }
+                    }
+                }
                 case EXIT -> loop = false;
                 default -> throw new IllegalStateException("Unexpected value: " + choice);
             }

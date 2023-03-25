@@ -2,7 +2,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class AddressBookOperations {
-    HashMap<String, AddressBookOperations> address_Dictionary = new HashMap<>();
     Scanner sc = new Scanner(System.in);
     List<Address> addressList = new ArrayList<>();
 
@@ -182,7 +181,7 @@ public class AddressBookOperations {
         }
     }
 
-    public void createAddressBooks() {
+    public void createAddressBooks(HashMap<String, AddressBookOperations> address_Dictionary) {
 
         System.out.println("Enter address book name:-");
         String addressBookName = sc.nextLine();
@@ -197,7 +196,7 @@ public class AddressBookOperations {
         address_Dictionary.put(addressBookName, addressBookOperations);
     }
 
-    public void editBooks() {
+    public void editBooks(HashMap<String, AddressBookOperations> address_Dictionary) {
         System.out.println("Enter the address book name you want to edit:-");
         String addressBookName = sc.nextLine();
         if (address_Dictionary.containsKey(addressBookName)) {
@@ -207,11 +206,11 @@ public class AddressBookOperations {
         } else {
             System.out.println(addressBookName + "Address book doesn't\nAdd Address book first");
             AddressBookOperations addressBookOperations = new AddressBookOperations();
-            addressBookOperations.createAddressBooks();
+            addressBookOperations.createAddressBooks(address_Dictionary);
         }
     }
 
-    public void deleteBook() {
+    public void deleteBook(HashMap<String, AddressBookOperations> address_Dictionary) {
         System.out.println("Enter the address book name you want to delete:-");
         String addressBookName = sc.nextLine();
         if (address_Dictionary.containsKey(addressBookName)) {
@@ -222,47 +221,17 @@ public class AddressBookOperations {
         }
     }
 
-    public void printBooks() {
+    public void printBooks(HashMap<String, AddressBookOperations> address_Dictionary) {
         for (Map.Entry<String, AddressBookOperations> addressBook : address_Dictionary.entrySet()) {
             System.out.println(addressBook.getKey());
             addressBook.getValue().printDetails();
         }
     }
 
-    public List<Address> searchByCity(String city) {
-        return addressList.stream().filter(person -> person.getCity().equalsIgnoreCase(city)).collect(Collectors.toList());
+    public List<Address> searchByState(String state,HashMap<String, AddressBookOperations> address_Dictionary){
+        return address_Dictionary.values().stream().flatMap(p->p.addressList.stream()).filter(p->p.getCity().equalsIgnoreCase(state)).collect(Collectors.toList());
     }
-
-    public List<Address> searchByState(String state){
-        return addressList.stream().filter(person->person.getState().equalsIgnoreCase(state)).collect(Collectors.toList());
-    }
-    public void searchBYOptions(){
-        Scanner scanner=new Scanner(System.in);
-        System.out.println("Enter choice of search:-\n1.City\n2.State");
-        int option= scanner.nextInt();
-        scanner.nextLine();
-        switch (option){
-            case 1-> {
-                System.out.println("Enter city name:-");
-                String city = scanner.nextLine();
-                for(Map.Entry<String, AddressBookOperations> entry:address_Dictionary.entrySet()){
-                    entry.getValue().searchByCity(city).forEach(System.out::println);
-                    System.out.println();
-                }
-            }
-            case 2->{
-                System.out.println("Enter State name:-");
-                String state=scanner.nextLine();
-                for(Map.Entry<String, AddressBookOperations> entry:address_Dictionary.entrySet()){
-                    entry.getValue().searchByState(state).forEach(System.out::println);
-                    System.out.println();
-                }
-            }
-            default -> {
-                System.out.println("Enter correct choice:-");
-                searchBYOptions();
-            }
-        }
+    public List<Address> searchByCity(String city,HashMap<String, AddressBookOperations> address_Dictionary){
+        return address_Dictionary.values().stream().flatMap(p -> p.addressList.stream()).filter(p->p.getState().equalsIgnoreCase(city)).collect(Collectors.toList());
     }
 }
-
