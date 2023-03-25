@@ -237,6 +237,26 @@ public class AddressBookOperations {
     }
 
     public List<Address> sortContactByName(HashMap<String, AddressBookOperations> address_Dictionary) {
-        return address_Dictionary.values().stream().flatMap(p -> p.addressList.stream()).sorted((Comparator.comparing(Address::getFirstName))).collect(Collectors.toList());
+        return address_Dictionary.values().stream().flatMap(p -> p.addressList.stream()).sorted(Comparator.comparing(Address::getFirstName)).collect(Collectors.toList());
+    }
+    public List<Address> sortContactByCity(HashMap<String, AddressBookOperations> address_Dictionary){
+        return address_Dictionary.values().stream().flatMap(p->p.addressList.stream()).sorted(Comparator.comparing(Address::getCity)).collect(Collectors.toList());
+    }
+    public List<Address> sortContactByZipCode(HashMap<String, AddressBookOperations> address_Dictionary){
+        return address_Dictionary.values().stream().flatMap(p->p.addressList.stream()).sorted(Comparator.comparing(Address::getPinCode)).collect(Collectors.toList());
+    }
+    public List<Address> sortContactByState(HashMap<String, AddressBookOperations> address_Dictionary){
+        return address_Dictionary.values().stream().flatMap(p->p.addressList.stream()).sorted(Comparator.comparing(Address::getState)).collect(Collectors.toList());
+    }
+    public void sortContacts(AddressBookOperations addressBookOperations,HashMap<String, AddressBookOperations> address_Dictionary){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Enter choice for sorting:-\n1.Name\n2.City\n3.State\n4.ZipCode");
+        int choice=scanner.nextInt();
+        switch (choice){
+            case 1-> System.out.println(addressBookOperations.sortContactByName(address_Dictionary));
+            case 2-> System.out.println(addressBookOperations.sortContactByCity(address_Dictionary));
+            case 3-> System.out.println(addressBookOperations.sortContactByState(address_Dictionary));
+            case 4-> System.out.println(addressBookOperations.sortContactByZipCode(address_Dictionary));
+        }
     }
 }

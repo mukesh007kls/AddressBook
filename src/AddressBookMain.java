@@ -54,8 +54,7 @@ public class AddressBookMain {
                         }
                     }
                 }
-                case SORTED_CONTACT_LIST ->
-                        System.out.println(addressBookOperations.sortContactByName(address_Dictionary));
+                case SORTED_CONTACT_LIST ->addressBookOperations.sortContacts(addressBookOperations,address_Dictionary);
                 case EXIT -> loop = false;
                 default -> throw new IllegalStateException("Unexpected value: " + choice);
             }
