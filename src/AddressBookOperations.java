@@ -228,11 +228,15 @@ public class AddressBookOperations {
         }
     }
 
-    public List<Address> searchByState(String state,HashMap<String, AddressBookOperations> address_Dictionary){
-        return address_Dictionary.values().stream().flatMap(p->p.addressList.stream()).filter(p->p.getCity().equalsIgnoreCase(state)).collect(Collectors.toList());
-    }
-    public List<Address> searchByCity(String city,HashMap<String, AddressBookOperations> address_Dictionary){
-        return address_Dictionary.values().stream().flatMap(p -> p.addressList.stream()).filter(p->p.getState().equalsIgnoreCase(city)).collect(Collectors.toList());
+    public List<Address> searchByState(String state, HashMap<String, AddressBookOperations> address_Dictionary) {
+        return address_Dictionary.values().stream().flatMap(p -> p.addressList.stream()).filter(p -> p.getCity().equalsIgnoreCase(state)).collect(Collectors.toList());
     }
 
+    public List<Address> searchByCity(String city, HashMap<String, AddressBookOperations> address_Dictionary) {
+        return address_Dictionary.values().stream().flatMap(p -> p.addressList.stream()).filter(p -> p.getState().equalsIgnoreCase(city)).collect(Collectors.toList());
+    }
+
+    public List<Address> sortContactByName(HashMap<String, AddressBookOperations> address_Dictionary) {
+        return address_Dictionary.values().stream().flatMap(p -> p.addressList.stream()).sorted((Comparator.comparing(Address::getFirstName))).collect(Collectors.toList());
+    }
 }
